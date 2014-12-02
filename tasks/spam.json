@@ -1,0 +1,49 @@
+{
+	"tasks": [
+		{
+			"datasets" : ["spambase"],
+			"target_name" : "class",
+			"finetune_lr" : 0.1,
+			"pretraining_epochs" : 5,
+			"pretrain_lr" : 0.001,
+			"training_epochs" : 10,
+			"batch_size" : 20,
+			"n_ins" : 57,
+			"n_outs" : 2,
+			"hidden_layers_sizes" : [30, 15],
+			"corruption_levels" : [0.1, 0.2],
+			"logfile" : "logs/spam.csv",
+			"targets" : 1
+		},
+		{
+			"datasets" : ["spambase"],
+			"target_name" : "class",
+			"finetune_lr" : 0.1,
+			"pretraining_epochs" : 50,
+			"pretrain_lr" : 0.001,
+			"training_epochs" : 200,
+			"batch_size" : 20,
+			"n_ins" : 57,
+			"n_outs" : 2,
+			"hidden_layers_sizes" : [30, 15],
+			"corruption_levels" : [0.1, 0.2],
+			"logfile" : "logs/spam.csv",
+			"targets" : 1
+		},
+		{
+			"datasets" : ["spambase"],
+			"target_name" : "class",
+			"finetune_lr" : 0.1,
+			"pretraining_epochs" : 100,
+			"pretrain_lr" : 0.001,
+			"training_epochs" : 300,
+			"batch_size" : 20,
+			"n_ins" : 57,
+			"n_outs" : 2,
+			"hidden_layers_sizes" : [40, 25, 15],
+			"corruption_levels" : [0.2, 0.2, 0.2],
+			"logfile" : "logs/spam.csv",
+			"targets" : 1
+		}
+	]
+}
