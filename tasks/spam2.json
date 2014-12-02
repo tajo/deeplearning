@@ -10,8 +10,8 @@
 			"batch_size" : 20,
 			"n_ins" : 57,
 			"n_outs" : 2,
-			"hidden_layers_sizes" : [30, 15],
-			"corruption_levels" : [0.1, 0.2],
+			"hidden_layers_sizes" : [50, 40, 30],
+			"corruption_levels" : [0.1, 0.2, 0.1],
 			"logfile" : "logs/spam.csv",
 			"targets" : 1
 		},
@@ -25,8 +25,8 @@
 			"batch_size" : 20,
 			"n_ins" : 57,
 			"n_outs" : 2,
-			"hidden_layers_sizes" : [30, 15],
-			"corruption_levels" : [0.1, 0.2],
+			"hidden_layers_sizes" : [30, 15, 5],
+			"corruption_levels" : [0.1, 0.2, 0.0],
 			"logfile" : "logs/spam.csv",
 			"targets" : 1
 		},
@@ -49,7 +49,7 @@
 			"datasets" : ["spambase"],
 			"target_name" : "class",
 			"finetune_lr" : 0.05,
-			"pretraining_epochs" : 0,
+			"pretraining_epochs" : 200,
 			"pretrain_lr" : 0.001,
 			"training_epochs" : 300,
 			"batch_size" : 20,
@@ -70,8 +70,8 @@
 			"batch_size" : 20,
 			"n_ins" : 57,
 			"n_outs" : 2,
-			"hidden_layers_sizes" : [20, 5],
-			"corruption_levels" : [0.2, 0.1],
+			"hidden_layers_sizes" : [20, 20],
+			"corruption_levels" : [0.2, 0.2],
 			"logfile" : "logs/spam.csv",
 			"targets" : 1
 		}

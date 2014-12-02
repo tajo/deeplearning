@@ -152,6 +152,7 @@ class SdA(object):
         # symbolic variable that points to the number of errors made on the
         # minibatch given by self.x and self.y
         self.errors = self.logLayer.errors(self.y)
+        self.recall = self.logLayer.recall(self.y)
 
     def pretraining_functions(self, train_set_x, batch_size):
         ''' Generates a list of functions, each of them implementing one
@@ -267,6 +268,14 @@ class SdA(object):
                                      (index + 1) * batch_size]},
                       name='valid')
 
+        test_recall_i = theano.function([index], self.recall,
+                 givens={
+                   self.x: test_set_x[index * batch_size:
+                                      (index + 1) * batch_size],
+                   self.y: test_set_y[index * batch_size:
+                                      (index + 1) * batch_size]},
+                      name='test_recall')
+
         # Create a function that scans the entire validation set
         def valid_score():
             return [valid_score_i(i) for i in xrange(n_valid_batches)]
@@ -275,7 +284,11 @@ class SdA(object):
         def test_score():
             return [test_score_i(i) for i in xrange(n_test_batches)]
 
-        return train_fn, valid_score, test_score
+        # Create a function that scans the entire test set for recall
+        def test_recall():
+            return [test_recall_i(i) for i in xrange(n_test_batches)]
+
+        return train_fn, valid_score, test_score, test_recall
 
 def plot_weights(layers, timestamp, dataset, pretraining_epochs, stage = ''):
   for i in xrange(0, len(layers)):
@@ -383,7 +396,7 @@ def test_SdA(finetune_lr=0.1,
 
     # get the training, validation and testing function for the model
     print '... getting the finetuning functions'
-    train_fn, validate_model, test_model = sda.build_finetune_functions(
+    train_fn, validate_model, test_model, test_recall = sda.build_finetune_functions(
                 datasets=datasets, batch_size=batch_size,
                 learning_rate=finetune_lr)
 
@@ -436,6 +449,7 @@ def test_SdA(finetune_lr=0.1,
                     # test it on the test set
                     test_losses = test_model()
                     test_score = numpy.mean(test_losses)
+                    test_recall_final = numpy.mean(test_recall())
                     print(('     epoch %i, minibatch %i/%i, test error of '
                            'best model %f %%') %
                           (epoch, minibatch_index + 1, n_train_batches,
@@ -446,13 +460,13 @@ def test_SdA(finetune_lr=0.1,
                 break
 
     end_time = time.clock()
-    bvl = best_validation_loss * 100.0
-    ts = test_score * 100.0
+    bvl = 100 - (best_validation_loss * 100.0)
+    ts = 100 - (test_score * 100.0)
     tm = (end_time - start_time) / 60.0
+    tr = 100-test_recall_final
 
-    print(('Optimization complete with best validation score of %f %%,'
-           'with test performance %f %%') %
-                 (bvl, ts))
+    print(('Optimization complete with best validation score of %f %%, test performance %f %%, test recall %f %%') %
+                 (bvl, ts, tr))
     print >> sys.stderr, ('The training code for file ' +
                           os.path.split(__file__)[1] +
                           ' ran for %.2fm' % (tm))
@@ -473,6 +487,7 @@ def test_SdA(finetune_lr=0.1,
               corruption_levels,
               bvl,
               ts,
+              tr,
               (end_time_global - start_time_global) / 60]
       writer = csv.writer(myfile, delimiter=',')
       writer.writerow(data)

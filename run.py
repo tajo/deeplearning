@@ -41,8 +41,9 @@ def run_task(params):
 					'n_outs',
 					'hidden_layers_sizes',
 					'corruption_levels (%)',
-					'valid_error (%)',
-					'test_error (%)',
+					'valid_perf (%)',
+					'test_perf (%)',
+					'test_recall',
 					'run_time (min)']
 
 			writer = csv.writer(myfile, delimiter=',')
