@@ -73,7 +73,7 @@ for fnc in sets:
                               'capital_run_length_average',
                               'capital_run_length_longest',
                               'capital_run_length_total']
-   params['split_ratio'] = 0.85
+   params['split_ratio'] = 0.7
    params['delimiter_in'] = ','
    params['delimiter_out'] = ','
    params['history_steps'] = 0
